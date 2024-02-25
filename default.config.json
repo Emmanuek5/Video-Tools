@@ -1,0 +1,15 @@
+{
+  "token": "",
+  "client_id": "899053361012293712",
+  "default_guild": "1202025167140945950",
+  "log_channel": "1202025168994844695",
+  "log_channel2": "1202025168994844696",
+  "details": {
+    "website": "https://clovenbots.com/"
+  },
+  "invite_link": "https://discord.gg/cloven",
+  "openai_key": "",
+  "database": {
+    "uri": "ioh8bdobrn5hz?replicaSet=rs0"
+  }
+}
