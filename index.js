@@ -30,6 +30,9 @@ const { sleep } = require("./utils/functions");
 const guildJoin = require("./events/guildJoin");
 const { default: mongoose } = require("mongoose");
 const { ready } = require("./events/ready");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+const genAI = new GoogleGenerativeAI(config.ai.gemini);
 const { guildDelete } = require("./events/guildDelete");
 const cloudinary = require("cloudinary");
 const client = new Client({
@@ -63,6 +66,7 @@ const walkSync = (dir, array) => {
     if (fs.statSync(filePath).isDirectory()) {
       walkSync(filePath, array);
     } else {
+      if (!file.endsWith(".js")) return;
       array.push(require(filePath));
     }
   });
