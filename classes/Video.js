@@ -246,38 +246,27 @@ class Video {
       fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
     }
 
-    console.log(this.file, audioFilePath, outputFilePath);
-
-    // Replace the audio of the video
+    // Execute the ffmpeg command to replace audio
     return new Promise((resolve, reject) => {
       ffmpeg()
         .input(this.file)
         .input(audioFilePath)
-        .videoCodec("copy") // Copy video codec
-        .audioCodec("aac") // AAC audio codec
+        .videoCodec("copy")
+        .audioCodec("aac")
         .output(outputFilePath)
-        .map("[0:v:0]") // Map the first video stream
-        .map("[1:a:0]") // Map the second audio stream
-        .complexFilter([
-          "[0:v:0]map=0:v:0", // Map the first video stream
-          "[1:a:0]map=0:a:0", // Map the second audio stream
-        ])
+        .outputOptions(["-map 0:v:0", "-map 1:a:0"])
         .on("end", () => {
-          console.log("Audio replacement completed");
           resolve(outputFilePath);
         })
         .on("progress", (progress) => {
-          console.log("Progress:", progress.percent);
           progressCallback(progress.percent);
         })
         .on("error", (err) => {
-          console.error("Error occurred during audio replacement:", err);
-          reject(err);
+          console.error("Error:", err);
         })
         .run();
     });
   }
-
   delete() {
     if (fs.existsSync(this.file)) {
       fs.unlinkSync(this.file);
