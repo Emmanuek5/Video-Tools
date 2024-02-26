@@ -234,11 +234,6 @@ class Video {
     outputFilePath,
     progressCallback = () => {}
   ) {
-    console.log("Executing replaceAudio function...");
-    console.log("Video file:", this.file);
-    console.log("Audio file:", audioFilePath);
-    console.log("Output file:", outputFilePath);
-
     if (!this.file || !fs.existsSync(this.file)) {
       throw new Error("Video file not provided or not found");
     }

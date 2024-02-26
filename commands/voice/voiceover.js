@@ -36,16 +36,16 @@ module.exports = {
       const audioFile = await download(
         audioAttachment.attachment.url,
         path.join(
-          process.cwd(),
-          "data",
+          __dirname,
+          "../../data",
           "audio",
           `${audioAttachment.attachment.id}.mp3`
         )
       );
       video.setFile(
         path.join(
-          process.cwd(),
-          "data",
+          __dirname,
+          "../../data",
           "videos",
           `${videoAttachment.attachment.id}.mp4`
         )
@@ -55,7 +55,8 @@ module.exports = {
       const processedVideo = await video.replaceAudio(
         audioFile,
         path.join(
-          process.cwd(),
+          __dirname,
+          "../../",
           "data",
           "videos",
           "processed",
