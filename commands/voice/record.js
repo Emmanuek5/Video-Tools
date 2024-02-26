@@ -102,6 +102,7 @@ module.exports = {
       console.warn(error);
       const embed = new EmbedBuilder();
       embed.setTitle("An error occurred while recording the voice channel.");
+      embed.setColor(Colors.Red);
       embed.setDescription(
         "Join our discord server below and report the issue \n `" + error + "`"
       );

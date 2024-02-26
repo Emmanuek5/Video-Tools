@@ -92,6 +92,7 @@ client.on("interactionCreate", async (interaction) => {
         "Join our discord server below and report the issue"
       );
 
+      embed.setColor(Colors.Red);
       const row = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setStyle("Link")

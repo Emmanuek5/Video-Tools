@@ -4,6 +4,7 @@ const {
   Client,
   AttachmentBuilder,
   EmbedBuilder,
+  Colors,
 } = require("discord.js");
 const Video = require("../../classes/Video");
 const path = require("path");
@@ -89,6 +90,7 @@ module.exports = {
       video.delete();
       const embed = new EmbedBuilder();
       embed.setTitle("An error occurred while adding subtitles to the video.");
+      embed.setColor(Colors.Red);
       embed.setDescription(
         "Join our discord server below and report the issue \n `" + error + "`"
       );
