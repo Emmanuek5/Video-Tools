@@ -251,15 +251,15 @@ class Video {
       ffmpeg()
         .input(this.file)
         .input(audioFilePath)
-        .complexFilter([
-          // Map the first video stream
-          "[0:v]map=0:v",
-          // Map the second audio stream
-          "[1:a]map=0:a",
-        ])
-        .output(outputFilePath)
         .videoCodec("copy") // Copy video codec
         .audioCodec("aac") // AAC audio codec
+        .output(outputFilePath)
+        .map("[0:v:0]") // Map the first video stream
+        .map("[1:a:0]") // Map the second audio stream
+        .complexFilter([
+          "[0:v:0]map=0:v:0", // Map the first video stream
+          "[1:a:0]map=0:a:0", // Map the second audio stream
+        ])
         .on("end", () => {
           resolve(outputFilePath);
         })
