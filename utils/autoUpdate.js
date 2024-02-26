@@ -32,7 +32,6 @@ const pullLatestChanges = () => {
 const checkAndPullChanges = async () => {
   try {
     const latestCommit = await getLatestCommit();
-    console.log(`Latest commit: ${latestCommit}`);
     if (latestCommit > currentCommit) {
       await pullLatestChanges();
       currentCommit = latestCommit;
