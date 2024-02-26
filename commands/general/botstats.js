@@ -9,6 +9,9 @@ const os = require("os");
 
 const totalMemory = os.totalmem(); // Total system memory in bytes
 
+function formatCpuUsage(usage) {
+  return `${usage.toFixed(2)}%`;
+}
 function formatUptime(uptime) {
   const totalSeconds = Math.floor(uptime / 1000);
   const days = Math.floor(totalSeconds / 86400);
@@ -44,16 +47,15 @@ module.exports = {
     const uptime = formatUptime(client.uptime);
     const ping = interaction.createdTimestamp - Date.now();
     const memoryUsage = process.memoryUsage().heapUsed;
-    const cpuUsage = process.cpuUsage().system;
 
     // CPU usage is returned in microseconds, uptime is in milliseconds, so we convert to milliseconds
     const uptimeInSeconds = client.uptime / 1000;
-    const cpuUsagePercentage = (
-      (cpuUsage / (uptimeInSeconds * 1000)) *
-      100
-    ).toFixed(2);
 
     const memoryPercentage = formatPercentage(memoryUsage, totalMemory);
+    const cpuUsage = os.cpus()[0].times;
+    const cpuUsagePercent = formatCpuUsage(
+      ((cpuUsage.user + cpuUsage.nice + cpuUsage.sys) / cpuUsage.idle) * 100
+    );
 
     const embed = new EmbedBuilder()
       .setTitle("Bot Stats")
@@ -70,7 +72,8 @@ module.exports = {
             totalMemory
           )} (${memoryPercentage})`,
           inline: true,
-        }
+        },
+        { name: "CPU Usage", value: `${cpuUsagePercent}`, inline: true }
       );
 
     const row = new ActionRowBuilder().addComponents(
