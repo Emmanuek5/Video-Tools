@@ -40,7 +40,6 @@ const checkAndPullChanges = async () => {
     if (latestCommit > currentCommit) {
       const result = await pullLatestChanges();
       if (result === "updated") {
-        console.log("Already up to date");
       } else {
         currentCommit = latestCommit;
         console.log("Pulled latest changes");
