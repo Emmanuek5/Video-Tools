@@ -246,6 +246,8 @@ class Video {
       fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
     }
 
+    console.log(this.file, audioFilePath, outputFilePath);
+
     // Replace the audio of the video
     return new Promise((resolve, reject) => {
       ffmpeg()
