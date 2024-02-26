@@ -62,12 +62,16 @@ module.exports = {
           "processed",
           `${Date.now()}_${videoAttachment.attachment.id}.mp4`
         ),
+
         // Progress callback function
         (progress) => {
+          // Ensure progress is between 0% and 100%
+          const clampedProgress = Math.min(Math.max(progress, 0), 100);
+          // Map progress to an index in the array of emojis
           const emojis = ["▶️", "⏸️", "⏹️"];
-          const emojiIndex = Math.floor(progress / 33.4);
+          const emojiIndex = Math.floor(clampedProgress / 33.4);
           const emoji = emojis[emojiIndex] || emojis[emojis.length - 1];
-          interaction.editReply(`${emoji} Progress: ${progress}%`);
+          interaction.editReply(`${emoji} Progress: ${clampedProgress}%`);
         }
       );
       const attachment = new AttachmentBuilder()
