@@ -12,6 +12,7 @@ const totalMemory = os.totalmem(); // Total system memory in bytes
 function formatCpuUsage(usage) {
   return `${usage.toFixed(2)}%`;
 }
+
 function formatUptime(uptime) {
   const totalSeconds = Math.floor(uptime / 1000);
   const days = Math.floor(totalSeconds / 86400);
@@ -73,7 +74,11 @@ module.exports = {
           )} (${memoryPercentage})`,
           inline: true,
         },
-        { name: "CPU Usage", value: `${cpuUsagePercent}`, inline: true }
+        {
+          name: "CPU Usage",
+          value: `${cpuUsagePercent} (${os.cpus().length} cores)`,
+          inline: true,
+        }
       );
 
     const row = new ActionRowBuilder().addComponents(
