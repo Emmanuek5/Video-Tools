@@ -86,15 +86,34 @@ client.on("interactionCreate", async (interaction) => {
       await command.execute(interaction, client);
     } catch (error) {
       console.error(error);
+      const embed = new EmbedBuilder();
+      embed.setTitle("There was an error while executing this command!");
+      embed.setDescription(
+        "Join our discord server below and report the issue"
+      );
+
+      const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setStyle("Link")
+          .setLabel("Invite Me")
+          .setURL(
+            `https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=1099783400472&scope=bot%20applications.commands`
+          ),
+
+        new ButtonBuilder()
+          .setStyle("Link")
+          .setLabel("Support Server")
+          .setURL(client.config.invite_link)
+      );
       await interaction
         .reply({
-          content: "There was an error while executing this command!",
-          ephemeral: true,
+          embeds: [embed],
+          components: [row],
         })
         .catch(() => {
           interaction.editReply({
-            content: "There was an error while executing this command!",
-            ephemeral: true,
+            embeds: [embed],
+            components: [row],
           });
           return;
         });

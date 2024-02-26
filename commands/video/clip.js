@@ -1,4 +1,9 @@
-const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  AttachmentBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
+} = require("discord.js");
 const Video = require("../../classes/Video");
 const path = require("path");
 const { formatTime, sleep } = require("../../utils/functions");
@@ -91,9 +96,29 @@ module.exports = {
       }
     } catch (error) {
       console.error("Error clipping video:", error);
-      await interaction.editReply(
-        "An error occurred while clipping the video."
+      video.delete();
+      const embed = new EmbedBuilder();
+      embed.setTitle("An error occurred while clipping the video.");
+      embed.setDescription(
+        "Join our discord server below and report the issue \n `" + error + "`"
       );
+      const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setStyle("Link")
+          .setLabel("Invite Me")
+          .setURL(
+            `https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=1099783400472&scope=bot%20applications.commands`
+          ),
+
+        new ButtonBuilder()
+          .setStyle("Link")
+          .setLabel("Support Server")
+          .setURL(client.config.invite_link)
+      );
+      await interaction.editReply({
+        embeds: [embed],
+        components: [row],
+      });
     }
   },
 };

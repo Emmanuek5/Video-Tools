@@ -87,9 +87,28 @@ module.exports = {
     } catch (error) {
       console.log(error);
       video.delete();
-      await interaction.editReply(
-        "There was an error while adding subtitles \n `" + error + "`"
+      const embed = new EmbedBuilder();
+      embed.setTitle("An error occurred while adding subtitles to the video.");
+      embed.setDescription(
+        "Join our discord server below and report the issue \n `" + error + "`"
       );
+      const row = new ActionRowBuilder().addComponents(
+        new ButtonBuilder()
+          .setStyle("Link")
+          .setLabel("Invite Me")
+          .setURL(
+            `https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=1099783400472&scope=bot%20applications.commands`
+          ),
+
+        new ButtonBuilder()
+          .setStyle("Link")
+          .setLabel("Support Server")
+          .setURL(client.config.invite_link)
+      );
+      await interaction.editReply({
+        embeds: [embed],
+        components: [row],
+      });
     }
   },
 };
