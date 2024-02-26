@@ -22,7 +22,12 @@ const pullLatestChanges = () => {
       if (error) {
         reject(error);
       } else {
-        resolve(stdout.trim());
+        // Check if the stdout contains "Already up to date"
+        if (stdout.includes("Already up to date")) {
+          resolve("updated"); // Resolve with "updated" if already up to date
+        } else {
+          resolve(stdout.trim()); // Resolve with the standard output if changes were pulled
+        }
       }
     });
   });
@@ -33,9 +38,13 @@ const checkAndPullChanges = async () => {
   try {
     const latestCommit = await getLatestCommit();
     if (latestCommit > currentCommit) {
-      await pullLatestChanges();
-      currentCommit = latestCommit;
-      console.log("Pulled latest changes");
+      const result = await pullLatestChanges();
+      if (result === "updated") {
+        console.log("Already up to date");
+      } else {
+        currentCommit = latestCommit;
+        console.log("Pulled latest changes");
+      }
     }
   } catch (error) {
     console.error("Error:", error);
