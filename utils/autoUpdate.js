@@ -33,14 +33,10 @@ const checkAndPullChanges = async () => {
   try {
     const latestCommit = await getLatestCommit();
     console.log(`Latest commit: ${latestCommit}`);
-
     if (latestCommit > currentCommit) {
-      console.log("Latest commit is greater than current commit!");
       await pullLatestChanges();
       currentCommit = latestCommit;
       console.log("Pulled latest changes");
-    } else {
-      console.log("Latest commit is not greater than current commit.");
     }
   } catch (error) {
     console.error("Error:", error);
