@@ -47,5 +47,6 @@ const checkAndPullChanges = async () => {
   }
 };
 
-// Run checkAndPullChanges every 5 seconds
-setInterval(checkAndPullChanges, 5000);
+module.exports = {
+  checkAndPullChanges,
+};

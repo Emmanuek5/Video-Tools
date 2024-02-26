@@ -1,4 +1,5 @@
 const { ActivityType, Activity, Client } = require("discord.js");
+const { checkAndPullChanges } = require("../utils/autoUpdate");
 
 module.exports = {
   /**
@@ -21,6 +22,10 @@ module.exports = {
     client.on("updateStatus", (status) => {
       client.user.setPresence(presense(status));
     });
+
+    setInterval(() => {
+      checkAndPullChanges(client);
+    }, 2000); //2 seconds
 
     setInterval(() => {
       client.user.setPresence(presense("online"));

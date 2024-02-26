@@ -31,7 +31,7 @@ const guildJoin = require("./events/guildJoin");
 const { default: mongoose } = require("mongoose");
 const { ready } = require("./events/ready");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-
+const autoUpdate = require("./utils/autoUpdate");
 const genAI = new GoogleGenerativeAI(config.ai.gemini);
 const { guildDelete } = require("./events/guildDelete");
 const cloudinary = require("cloudinary");
