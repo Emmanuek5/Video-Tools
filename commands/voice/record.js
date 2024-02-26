@@ -31,7 +31,7 @@ module.exports = {
    * @param {ChatInputCommandInteraction} interaction - the interaction object containing options for video cutting
    * @return {Promise<void>} a promise that resolves when the video cutting is completed
    */
-  async execute(interaction) {
+  async execute(interaction, client) {
     await interaction.deferReply();
     const config = require("../../config.json");
     const embed = new EmbedBuilder();

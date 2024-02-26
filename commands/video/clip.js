@@ -35,7 +35,7 @@ module.exports = {
         .setRequired(true);
     }),
 
-  async execute(interaction) {
+  async execute(interaction,client) {
     await interaction.deferReply();
 
     // Retrieve options from interaction

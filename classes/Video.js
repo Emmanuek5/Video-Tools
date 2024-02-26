@@ -222,6 +222,58 @@ class Video {
     });
   }
 
+  /**
+   * Replace the audio of the video with the provided audio file.
+   * @param {string} audioFilePath - Path to the audio file.
+   * @param {string} outputFilePath - Path to save the video with replaced audio.
+   * @param {function} progressCallback - A callback function that will be called with the progress percentage.
+   * @return {Promise<string>} A promise that resolves with the path to the video with replaced audio.
+   */
+  async replaceAudio(
+    audioFilePath,
+    outputFilePath,
+    progressCallback = () => {}
+  ) {
+    if (!this.file || !fs.existsSync(this.file)) {
+      throw new Error("Video file not provided or not found");
+    }
+    if (!audioFilePath || !fs.existsSync(audioFilePath)) {
+      throw new Error("Audio file not provided or not found");
+    }
+
+    // Create the directory where the output video will be saved
+    if (!fs.existsSync(path.dirname(outputFilePath))) {
+      fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
+    }
+
+    // Replace the audio of the video
+    return new Promise((resolve, reject) => {
+      ffmpeg()
+        .input(this.file)
+        .input(audioFilePath)
+        .complexFilter([
+          // Map the first video stream
+          "[0:v]map=0:v",
+          // Map the second audio stream
+          "[1:a]map=0:a",
+          // Overwrite the original audio with the provided audio
+          "-c:v copy",
+          "-c:a aac",
+        ])
+        .output(outputFilePath)
+        .on("end", () => {
+          resolve(outputFilePath);
+        })
+        .on("progress", (progress) => {
+          progressCallback(progress.percent);
+        })
+        .on("error", (err) => {
+          reject(err);
+        })
+        .run();
+    });
+  }
+
   delete() {
     if (fs.existsSync(this.file)) {
       fs.unlinkSync(this.file);

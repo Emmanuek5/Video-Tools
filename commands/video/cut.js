@@ -40,7 +40,7 @@ module.exports = {
    * @param {ChatInputCommandInteraction} interaction - the interaction object containing options for video cutting
    * @return {Promise<void>} a promise that resolves when the video cutting is completed
    */
-  async execute(interaction) {
+  async execute(interaction,client) {
     await interaction.deferReply();
     // Retrieve options from interaction
     const videoAttachment = interaction.options.get("video");
