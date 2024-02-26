@@ -102,8 +102,7 @@ class Video {
   }
 
   async clip(numberOfParts, duration, progressCallback = () => {}) {
-    this.duration = duration;
-    const partDuration = Math.floor(this.duration / numberOfParts);
+    const partDuration = duration; // Each part will have the given duration
     const maxFileSize = 25 * 1024 * 1024; // 25MB in bytes
     const maxNumberOfVideosPerZip = Math.ceil(
       maxFileSize / (numberOfParts * partDuration * 100)
@@ -114,7 +113,7 @@ class Video {
     let completedParts = 0;
 
     for (let i = 0; i < numberOfParts; i++) {
-      const startTime = formatTime(i * partDuration);
+      const startTime = formatTime(i * partDuration); // Calculate start time based on part index and duration
       const partFile = path.join(
         process.cwd(),
         "data",
@@ -156,6 +155,11 @@ class Video {
         "zips",
         `${this.name}_clipped_${i + 1}.zip`
       );
+
+      // Create the zips folder if it doesn't exist
+      if (!fs.existsSync(path.dirname(zipFilePath))) {
+        fs.mkdirSync(path.dirname(zipFilePath), { recursive: true });
+      }
       const output = createWriteStream(zipFilePath);
       const archive = archiver("zip");
 
@@ -196,6 +200,12 @@ class Video {
       throw new Error("Subtitle file not provided or not found");
     }
 
+    //create the dir where the output video will be
+    if (!fs.existsSync(path.dirname(outputFilePath))) {
+      fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
+    }
+
+    // Add subtitles to the video
     return new Promise((resolve, reject) => {
       const subtitlesFileName = path.basename(this.subtitles);
 
