@@ -66,7 +66,9 @@ module.exports = {
         // Progress callback function
         (progress) => {
           // Ensure progress is between 0% and 100%
-          const clampedProgress = Math.min(Math.max(progress, 0), 100);
+          const clampedProgress = Math.round(
+            Math.min(Math.max(progress, 0), 100)
+          );
           // Map progress to an index in the array of emojis
           const emojis = ["▶️", "⏸️", "⏹️"];
           const emojiIndex = Math.floor(clampedProgress / 33.4);
