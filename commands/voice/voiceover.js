@@ -78,11 +78,11 @@ module.exports = {
         files: [attachment],
       });
     } catch (error) {
-      console.error("Error clipping video:", error);
+      console.error("Error occurred while processing video", error);
       video.delete();
       const embed = new EmbedBuilder();
       embed.setColor(Colors.Red);
-      embed.setTitle("An error occurred while clipping the video.");
+      embed.setTitle("An error occurred while processing the video");
       embed.setDescription(
         "Join our discord server below and report the issue \n `" + error + "`"
       );

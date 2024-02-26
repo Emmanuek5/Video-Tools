@@ -256,11 +256,10 @@ class Video {
           "[0:v]map=0:v",
           // Map the second audio stream
           "[1:a]map=0:a",
-          // Overwrite the original audio with the provided audio
-          "-c:v copy",
-          "-c:a aac",
         ])
         .output(outputFilePath)
+        .videoCodec("copy") // Copy video codec
+        .audioCodec("aac") // AAC audio codec
         .on("end", () => {
           resolve(outputFilePath);
         })
