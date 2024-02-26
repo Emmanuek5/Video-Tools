@@ -234,6 +234,11 @@ class Video {
     outputFilePath,
     progressCallback = () => {}
   ) {
+    console.log("Executing replaceAudio function...");
+    console.log("Video file:", this.file);
+    console.log("Audio file:", audioFilePath);
+    console.log("Output file:", outputFilePath);
+
     if (!this.file || !fs.existsSync(this.file)) {
       throw new Error("Video file not provided or not found");
     }
@@ -261,12 +266,15 @@ class Video {
           "[1:a:0]map=0:a:0", // Map the second audio stream
         ])
         .on("end", () => {
+          console.log("Audio replacement completed");
           resolve(outputFilePath);
         })
         .on("progress", (progress) => {
+          console.log("Progress:", progress.percent);
           progressCallback(progress.percent);
         })
         .on("error", (err) => {
+          console.error("Error occurred during audio replacement:", err);
           reject(err);
         })
         .run();
