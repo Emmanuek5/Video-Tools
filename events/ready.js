@@ -25,6 +25,7 @@ module.exports = {
     app.post(
       "/topgg/webhook",
       webhook.listener((vote) => {
+        console.log(vote);
         const user = client.users.cache.get(vote.user);
         client.emit("topggVote", user, vote, client);
         console.log(vote);
