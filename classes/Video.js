@@ -192,7 +192,7 @@ class Video {
    * @param {string} outputFilePath - Path to save the video with subtitles.
    * @return {Promise<string>} A promise that resolves with the path to the video with subtitles.
    */
-  async addSubtitles(outputFilePath) {
+  async addSubtitles(outputFilePath, progressCallback = () => {}) {
     if (!this.file || !fs.existsSync(this.file)) {
       throw new Error("Video file not provided or not found");
     }
@@ -212,6 +212,9 @@ class Video {
       ffmpeg(this.file)
         .videoFilters(`subtitles=${subtitlesFileName}`)
         .output(outputFilePath)
+        .on("progress", (progress) => {
+          progressCallback(progress.percent);
+        })
         .on("end", () => {
           resolve(outputFilePath);
         })

@@ -58,6 +58,10 @@ module.exports = {
 
       interaction.editReply("Adding subtitles to the video...");
 
+      const progressCallback = (progress) => {
+        interaction.editReply(`:hourglass: Adding subtitles... ${progress}% `);
+      };
+
       const file = await video
         .addSubtitles(
           path.join(
@@ -65,7 +69,8 @@ module.exports = {
             "data",
             "/videos/subtitled",
             Date.now() + ".mp4"
-          )
+          ),
+          progressCallback
         )
         .then((path) => {
           const attachment = new AttachmentBuilder()
