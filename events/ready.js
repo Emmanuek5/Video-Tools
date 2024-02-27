@@ -2,6 +2,7 @@ const { ActivityType, Activity, Client } = require("discord.js");
 const { checkAndPullChanges } = require("../utils/autoUpdate");
 const { AutoPoster } = require("topgg-autoposter");
 const { app, webhook } = require("../server");
+const config = require("../config.json");
 
 module.exports = {
   /**
@@ -9,7 +10,10 @@ module.exports = {
    * @param {Client} client
    */
   async ready(client) {
-    const ap = AutoPoster(client.config.topgg.token, client);
+    const ap = AutoPoster(
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg5OTA1MzM2MTAxMjI5MzcxMiIsImJvdCI6dHJ1ZSwiaWF0IjoxNzA5MDY0MDUxfQ.S5qm6c6CSdbkyhj7u0OvMbr522GjZL05Z2JZqL_YtwQ",
+      client
+    );
     const presense = (status = "online") => {
       return {
         status: status,
@@ -31,9 +35,11 @@ module.exports = {
         console.log(vote);
       })
     ); // attach the middleware
+
     ap.on("posted", () => {
       console.log("Posted!");
     });
+
     client.on("updateStatus", (status) => {
       ap.post();
       client.user.setPresence(presense(status));
