@@ -1,15 +1,26 @@
 {
-  "token": "",
+  "token": "ODk5MDUzMzYxMDEyMjkzNzEy.GFvJg2.ZqYj7OK5iEpyvO_FZCPQ4w4QwoJhsQAcJmnS_g",
   "client_id": "899053361012293712",
-  "default_guild": "1202025167140945950",
-  "log_channel": "1202025168994844695",
-  "log_channel2": "1202025168994844696",
+  "info": {
+    "error": "1202025168994844697",
+    "join_channel": "1202025168994844695",
+    "leave_channel": "1202025168994844696",
+    "default_guild": "1202025167140945950"
+  },
+  "topgg": {
+    "token": "",
+    "webhookauth": "7d0cbeae8e0b98073af662bc46cd6efb",
+    "port": 3000
+  },
   "details": {
     "website": "https://clovenbots.com/"
   },
   "invite_link": "https://discord.gg/cloven",
-  "openai_key": "",
+  "ai": {
+    "key": "",
+    "gemini": ""
+  },
   "database": {
-    "uri": "ioh8bdobrn5hz?replicaSet=rs0"
+    "uri": ""
   }
 }

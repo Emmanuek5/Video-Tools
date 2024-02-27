@@ -1,7 +1,7 @@
 const { OpenAI } = require("openai");
 const config = require("../config.json");
 const openai = new OpenAI({
-  apiKey: config.openai_key,
+  apiKey: config.ai.key,
 });
 const fs = require("fs");
 

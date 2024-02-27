@@ -9,6 +9,7 @@ const {
   Colors,
 } = require("discord.js");
 const GuildModel = require("../models/Guild");
+const config = require("../config.json");
 
 module.exports = {
   /**
@@ -20,7 +21,6 @@ module.exports = {
    */
   guildDelete: async (guild, client) => {
     client.emit("updateStatus", "online");
-    const config = client.config;
 
     const guildInfo = await GuildModel.findOne({
       GuildID: guild.id,
@@ -77,14 +77,14 @@ module.exports = {
           .setURL(invite.url)
       );
 
-      client.channels.cache.get(config.log_channel2).send({
+      client.channels.cache.get(config.info.leave_channel).send({
         embeds: [embed],
         components: [row1],
       });
       return;
     }
 
-    client.channels.cache.get(config.log_channel2).send({
+    client.channels.cache.get(config.info.leave_channel).send({
       embeds: [embed],
     });
   },

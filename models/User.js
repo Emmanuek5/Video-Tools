@@ -1,0 +1,23 @@
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+  UserID: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  VoteCount: {
+    type: Number,
+    default: 0,
+  },
+  Voted: {
+    type: Boolean,
+    default: false,
+  },
+  LastVoted: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+module.exports = mongoose.model("User", userSchema);

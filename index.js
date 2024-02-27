@@ -35,6 +35,8 @@ const autoUpdate = require("./utils/autoUpdate");
 const genAI = new GoogleGenerativeAI(config.ai.gemini);
 const { guildDelete } = require("./events/guildDelete");
 const cloudinary = require("cloudinary");
+const { topggVote } = require("./events/topggVote");
+const User = require("./models/User");
 const client = new Client({
   partials: [Partials.Channel, Partials.GuildMember, Partials.Message],
   intents: [
@@ -74,6 +76,20 @@ const walkSync = (dir, array) => {
 
 client.commands = commands;
 client.config = config;
+
+client.on("interactionCreate", async (interaction) => {
+  let user = User.findOne({ id: interaction.user.id });
+  if (!user) {
+    user = new User({
+      id: interaction.user.id,
+      VoteCount: 0,
+      Voted: false,
+      LastVoted: Date.now(),
+    });
+
+    await user.save();
+  }
+});
 
 client.on("interactionCreate", async (interaction) => {
   try {
@@ -118,11 +134,22 @@ client.on("interactionCreate", async (interaction) => {
           });
           return;
         });
+      const embed2 = new EmbedBuilder();
+      embed2.setTitle(
+        `There was an error while executing ${command.data.name}  command!`
+      );
+      embed2.setDescription(
+        `${error.name}: ${error.message}\n\n${error.stack}`
+      );
+      embed2.setColor(Colors.Red);
+      client.channels.cache.get(config.info.error).send({ embeds: [embed2] });
     }
   } catch (error) {
     return;
   }
 });
+
+client.on("topggVote", topggVote);
 
 client.on("guildCreate", (guild) => {
   guildJoin(guild, client);

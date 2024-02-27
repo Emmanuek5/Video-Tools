@@ -7,6 +7,7 @@ const {
   PermissionsBitField,
   Client,
 } = require("discord.js");
+const config = require("../config.json");
 const GuildModel = require("../models/Guild");
 
 /**
@@ -18,7 +19,6 @@ const GuildModel = require("../models/Guild");
  */
 async function guildJoin(guild, client) {
   client.emit("updateStatus", "online");
-  const config = client.config;
 
   // Sending a welcome message to the guild owner
   const embed2 = new EmbedBuilder()
@@ -90,7 +90,7 @@ async function guildJoin(guild, client) {
         .setURL(invite.url)
     );
 
-    client.channels.cache.get(config.log_channel).send({
+    client.channels.cache.get(config.info.join_channel).send({
       embeds: [embed],
       components: [row1],
     });
