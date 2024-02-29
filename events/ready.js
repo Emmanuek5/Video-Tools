@@ -32,12 +32,12 @@ module.exports = {
         console.log(vote);
         const user = client.users.cache.get(vote.user);
         client.emit("topggVote", user, vote, client);
-        console.log(vote);
       })
     ); // attach the middleware
 
-    ap.on("posted", () => {
-      console.log("Posted!");
+    // optional
+    ap.on("posted", (stats) => {
+      console.log(`Posted stats to Top.gg | ${stats.serverCount} servers`);
     });
 
     client.on("updateStatus", (status) => {
