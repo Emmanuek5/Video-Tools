@@ -16,7 +16,7 @@ module.exports = {
       });
     }
 
-    user_info.VoteCount += vote;
+    user_info.VoteCount += 1;
     user_info.Voted = true;
     user_info.LastVoted = Date.now();
 
