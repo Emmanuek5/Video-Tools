@@ -2,7 +2,6 @@ const User = require("../models/User");
 
 module.exports = {
   async topggVote(user, vote, client) {
-    console.log(user, vote);
     let user_info = await User.findOne({
       UserID: user.id,
     });
