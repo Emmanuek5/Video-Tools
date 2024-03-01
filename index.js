@@ -78,10 +78,10 @@ client.commands = commands;
 client.config = config;
 
 client.on("interactionCreate", async (interaction) => {
-  let user = User.findOne({ id: interaction.user.id });
+  let user = User.findOne({ UserID: interaction.user.id });
   if (!user) {
     user = new User({
-      id: interaction.user.id,
+      UserID: interaction.user.id,
       VoteCount: 0,
       Voted: false,
       LastVoted: Date.now(),
