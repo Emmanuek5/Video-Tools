@@ -1,4 +1,8 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  ChatInputCommandInteraction,
+} = require("discord.js");
 const User = require("../../models/User");
 
 module.exports = {
@@ -11,9 +15,15 @@ module.exports = {
         .setDescription("The user to get the stats of")
         .setRequired(false)
     ),
+  /**
+   *
+   * @param {ChatInputCommandInteraction} interaction
+   */
   async execute(interaction) {
-    const user = interaction.options.getUser("user") || interaction.user;
-    const data = User.findOne({ UserID: user.id });
+    const user = interaction.options.getUser("user")
+      ? interaction.options.getUser("user")
+      : interaction.user;
+    const data = await User.findOne({ UserID: user.id });
     const embed = new EmbedBuilder();
     embed.setTitle(`${user.tag}'s stats`);
     embed
