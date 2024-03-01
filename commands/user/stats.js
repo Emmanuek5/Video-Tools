@@ -25,7 +25,18 @@ module.exports = {
     const user = interaction.options.getUser("user")
       ? interaction.options.getUser("user")
       : interaction.user;
-    const data = await User.findOne({ UserID: user.id });
+    let data = await User.findOne({ UserID: user.id });
+    if (!data) {
+      data = new User({
+        UserID: user.id,
+        VoteCount: 0,
+        LastVoted: null,
+        Clips: 0,
+        Cuts: 0,
+        Subtitled: 0,
+      });
+      await data.save();
+    }
     const embed = new EmbedBuilder();
     embed.setTitle(`${user.tag}'s stats`);
 
