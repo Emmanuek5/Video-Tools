@@ -11,6 +11,7 @@ const { formatTime, sleep } = require("../../utils/functions");
 const { createWriteStream } = require("fs");
 const archiver = require("archiver");
 const fs = require("fs");
+const User = require("../../models/User");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -35,7 +36,7 @@ module.exports = {
         .setRequired(true);
     }),
 
-  async execute(interaction,client) {
+  async execute(interaction, client) {
     await interaction.deferReply();
 
     // Retrieve options from interaction
@@ -51,7 +52,7 @@ module.exports = {
 
     // Create a new instance of the Video class
     const video = new Video();
-
+    const user = await User.findOne({ UserID: interaction.user.id });
     // Set file name, duration, and download the video
     video.setFile(
       path.join(
@@ -93,6 +94,8 @@ module.exports = {
         });
         // Delete the video file and zip file after sending
         video.delete();
+        user.Clips++;
+        user.save();
         fs.unlinkSync(zipFilePath);
       }
     } catch (error) {

@@ -92,7 +92,12 @@ module.exports = {
       new ButtonBuilder()
         .setStyle("Link")
         .setLabel("Support Server")
-        .setURL(client.config.invite_link)
+        .setURL(client.config.invite_link),
+
+      new ButtonBuilder()
+        .setStyle("Link")
+        .setLabel("Vote")
+        .setURL(client.config.topgg.votelink)
     );
 
     embed.setFooter({

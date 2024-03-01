@@ -120,7 +120,12 @@ client.on("interactionCreate", async (interaction) => {
         new ButtonBuilder()
           .setStyle("Link")
           .setLabel("Support Server")
-          .setURL(client.config.invite_link)
+          .setURL(client.config.invite_link),
+
+        new ButtonBuilder()
+          .setStyle("Link")
+          .setLabel("Vote")
+          .setURL(config.topgg.votelink)
       );
       await interaction
         .reply({

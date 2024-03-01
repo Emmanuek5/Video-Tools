@@ -76,7 +76,12 @@ module.exports = {
       new ButtonBuilder()
         .setStyle("Link")
         .setLabel("Support Server")
-        .setURL(client.config.invite_link)
+        .setURL(client.config.invite_link),
+
+      new ButtonBuilder()
+        .setStyle("Link")
+        .setLabel("Vote")
+        .setURL(client.config.topgg.votelink)
     );
     await interaction.reply({ embeds: [embed], components: [row] });
   },

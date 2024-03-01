@@ -2,6 +2,8 @@ const {
   SlashCommandBuilder,
   EmbedBuilder,
   ChatInputCommandInteraction,
+  ActionRowBuilder,
+  ButtonBuilder,
 } = require("discord.js");
 const User = require("../../models/User");
 
@@ -19,7 +21,7 @@ module.exports = {
    *
    * @param {ChatInputCommandInteraction} interaction
    */
-  async execute(interaction) {
+  async execute(interaction, client) {
     const user = interaction.options.getUser("user")
       ? interaction.options.getUser("user")
       : interaction.user;
@@ -27,14 +29,18 @@ module.exports = {
     const embed = new EmbedBuilder();
     embed.setTitle(`${user.tag}'s stats`);
     embed
-      .setDescription(
-        `**${user.tag}** has voted **${
-          data.VoteCount
-        }** times /n He Last Voted on **${
-          data.LastVoted ? new Date(data.LastVoted).toLocaleString() : "Never"
-        }**`
-      )
+
       .addFields(
+        {
+          name: "Votes",
+          value: `${data.VoteCount}`,
+          inline: true,
+        },
+        {
+          name: "Last Voted",
+          value: `${new Date(data.LastVoted).toLocaleString()}`,
+          inline: true,
+        },
         {
           name: "Vidoes Clipped",
           value: `${data.Clips}`,
@@ -52,6 +58,13 @@ module.exports = {
         }
       )
       .setColor("#0099ff");
-    await interaction.reply({ embeds: [embed] });
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setStyle("Link")
+        .setLabel("Vote")
+        .setURL(client.config.topgg.votelink)
+    );
+
+    await interaction.reply({ embeds: [embed], components: [row] });
   },
 };

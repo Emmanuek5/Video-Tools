@@ -11,6 +11,7 @@ const {
 const Video = require("../../classes/Video");
 const path = require("path");
 const { formatTime } = require("../../utils/functions");
+const User = require("../../models/User");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -40,7 +41,7 @@ module.exports = {
    * @param {ChatInputCommandInteraction} interaction - the interaction object containing options for video cutting
    * @return {Promise<void>} a promise that resolves when the video cutting is completed
    */
-  async execute(interaction,client) {
+  async execute(interaction, client) {
     await interaction.deferReply();
     // Retrieve options from interaction
     const videoAttachment = interaction.options.get("video");
@@ -55,6 +56,7 @@ module.exports = {
 
     // Create a new instance of the Video class
     const video = new Video();
+    const user = await User.findOne({ UserID: interaction.user.id });
 
     // Set file name, duration, and download the video
     video.setFile(
@@ -106,6 +108,8 @@ module.exports = {
           files: [attachment],
         })
         .then(() => {
+          user.Cuts++;
+          user.save();
           video.delete();
         });
     } catch (error) {

@@ -10,6 +10,7 @@ const Video = require("../../classes/Video");
 const path = require("path");
 const { download } = require("../../utils/functions");
 const fs = require("fs");
+const User = require("../../models/User");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("subtitle")
@@ -34,6 +35,7 @@ module.exports = {
   async execute(interaction, client) {
     await interaction.deferReply();
     const video = new Video();
+    const user = await User.findOne({ UserID: interaction.user.id });
     try {
       const videoAttachment = interaction.options.get("video");
       const subtitleAttachment = interaction.options.get("subtitle");
@@ -85,8 +87,9 @@ module.exports = {
           interaction
             .editReply({ content: " ", embeds: [embed], files: [attachment] })
             .then(() => {
+              user.Subtitled++;
+              user.save();
               video.delete();
-
               fs.unlinkSync(path);
             });
         });
