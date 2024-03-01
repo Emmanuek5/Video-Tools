@@ -28,8 +28,15 @@ module.exports = {
     const data = await User.findOne({ UserID: user.id });
     const embed = new EmbedBuilder();
     embed.setTitle(`${user.tag}'s stats`);
-    embed
 
+    // Calculate time elapsed since last voted
+    const lastVoted = data.LastVoted ? new Date(data.LastVoted) : null;
+    const timeDifference = lastVoted ? Date.now() - lastVoted.getTime() : null;
+    const timeAgo = timeDifference
+      ? timeDifferenceToHumanReadable(timeDifference)
+      : "Never";
+
+    embed
       .addFields(
         {
           name: "Votes",
@@ -38,21 +45,21 @@ module.exports = {
         },
         {
           name: "Last Voted",
-          value: `${new Date(data.LastVoted).toLocaleString()}`,
+          value: timeAgo,
           inline: true,
         },
         {
-          name: "Vidoes Clipped",
+          name: "Videos Clipped",
           value: `${data.Clips}`,
           inline: true,
         },
         {
-          name: "Vidoes Cut",
+          name: "Videos Cut",
           value: `${data.Cuts}`,
           inline: true,
         },
         {
-          name: "Vidoes Subtitled",
+          name: "Videos Subtitled",
           value: `${data.Subtitled}`,
           inline: true,
         }
@@ -68,3 +75,18 @@ module.exports = {
     await interaction.reply({ embeds: [embed], components: [row] });
   },
 };
+
+// Function to convert time difference to human-readable format
+function timeDifferenceToHumanReadable(timeDifference) {
+  const seconds = Math.floor(timeDifference / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) return `${days} day${days > 1 ? "s" : ""} ago`;
+  if (hours > 0) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+  if (minutes > 0) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+  if (seconds > 0) return `${seconds} second${seconds > 1 ? "s" : ""} ago`;
+
+  return "Just now";
+}
