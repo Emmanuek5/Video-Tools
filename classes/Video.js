@@ -78,9 +78,9 @@ class Video {
         .setDuration(dur)
         .output(outputFileName)
         .on("progress", (progress) => {
-          // Calculate percentage completion and call the progress callback
+          // Calculate percentage completion based on time and duration
           const percentComplete = Math.min(
-            Math.round((progress.percent / 100) * 100),
+            Math.round((progress.timemark / dur) * 100),
             100
           ); // Ensure the progress is between 0 and 100
           progressCallback(percentComplete);

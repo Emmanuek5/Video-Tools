@@ -92,12 +92,9 @@ module.exports = {
 
       let progressPercent = 0;
       const progressCallback = async (percentComplete) => {
-        if (percentComplete > progressPercent) {
-          progressPercent = percentComplete;
-          await interaction.editReply(
-            `Cutting ${progressPercent}% complete...`
-          );
-        }
+        await interaction.editReply(
+          `:hourglass: Cutting ${percentComplete}% complete...`
+        );
       };
 
       await video.cut(startTimeString, dur, cutfile, progressCallback);

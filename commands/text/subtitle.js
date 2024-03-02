@@ -3,6 +3,8 @@ const {
   ChatInputCommandInteraction,
   Client,
   AttachmentBuilder,
+  ActionRowBuilder,
+  ButtonBuilder,
   EmbedBuilder,
   Colors,
 } = require("discord.js");
@@ -61,7 +63,9 @@ module.exports = {
       interaction.editReply("Adding subtitles to the video...");
 
       const progressCallback = (progress) => {
-        interaction.editReply(`:hourglass: Adding subtitles... ${progress}% `);
+        interaction.editReply(
+          `:hourglass: Adding subtitles... ${progress.toFixed(2)}% `
+        );
       };
 
       const file = await video
