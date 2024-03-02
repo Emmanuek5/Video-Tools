@@ -213,7 +213,8 @@ class Video {
         .videoFilters(`subtitles=${subtitlesFileName}`)
         .output(outputFilePath)
         .on("progress", (progress) => {
-          progressCallback(progress.percent);
+          console.log(progress);
+          progressCallback(progress);
         })
         .on("end", () => {
           resolve(outputFilePath);
