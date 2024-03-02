@@ -205,6 +205,9 @@ class Video {
       fs.mkdirSync(path.dirname(outputFilePath), { recursive: true });
     }
 
+    // Get total duration of the video
+    const totalDuration = await getVideoDurationInSeconds(this.file);
+
     // Add subtitles to the video
     return new Promise((resolve, reject) => {
       const subtitlesFileName = path.basename(this.subtitles);
@@ -213,8 +216,10 @@ class Video {
         .videoFilters(`subtitles=${subtitlesFileName}`)
         .output(outputFilePath)
         .on("progress", (progress) => {
-          console.log(progress);
-          progressCallback(progress);
+          // Calculate progress percentage based on the current time mark
+          const currentTimeInSeconds = parseTimeMark(progress.timemark);
+          const progressPercent = (currentTimeInSeconds / totalDuration) * 100;
+          progressCallback(progressPercent);
         })
         .on("end", () => {
           resolve(outputFilePath);
@@ -284,6 +289,27 @@ class Video {
       fs.unlinkSync(this.subtitles);
     }
   }
+}
+
+function parseTimeMark(timeMark) {
+  const parts = timeMark.split(":");
+  const hours = parseInt(parts[0], 10);
+  const minutes = parseInt(parts[1], 10);
+  const seconds = parseFloat(parts[2]);
+  return hours * 3600 + minutes * 60 + seconds;
+}
+
+// Function to get the duration of a video file in seconds
+function getVideoDurationInSeconds(videoFilePath) {
+  return new Promise((resolve, reject) => {
+    ffmpeg.ffprobe(videoFilePath, (err, metadata) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(metadata.format.duration);
+      }
+    });
+  });
 }
 
 module.exports = Video;
