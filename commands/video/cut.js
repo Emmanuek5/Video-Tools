@@ -93,7 +93,7 @@ module.exports = {
       let progressPercent = 0;
       const progressCallback = async (percentComplete) => {
         await interaction.editReply(
-          `:hourglass: Cutting ${percentComplete}% complete...`
+          `:hourglass: Cutting ${percentComplete.tofixed(2)}% complete...`
         );
       };
 

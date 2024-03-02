@@ -82,14 +82,7 @@ class Video {
         .setDuration(dur)
         .output(outputFileName)
         .on("progress", (progress) => {
-          console.log("Progress:", progress);
-          // Calculate percentage completion based on time and duration
-          const percentComplete = Math.min(
-            Math.round((progress.timemark / dur) * 100),
-            100
-          ); // Ensure the progress is between 0 and 100
-          console.log("Percent complete:", percentComplete);
-          progressCallback(percentComplete);
+          progressCallback(progress.percent);
         })
         .on("end", () => {
           this.cuts.push({
