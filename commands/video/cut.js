@@ -91,10 +91,12 @@ module.exports = {
       );
 
       let progressPercent = 0;
-      const progressCallback = (percentComplete) => {
+      const progressCallback = async (percentComplete) => {
         if (percentComplete > progressPercent) {
           progressPercent = percentComplete;
-          interaction.editReply(`Cutting ${progressPercent}% complete...`);
+          await interaction.editReply(
+            `Cutting ${progressPercent}% complete...`
+          );
         }
       };
 
