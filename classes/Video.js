@@ -72,10 +72,6 @@ class Video {
   }
 
   async cut(start, dur, outputFileName, progressCallback = () => {}) {
-    console.log("Start time:", start);
-    console.log("Duration:", dur);
-    console.log("Output file:", outputFileName);
-
     return new Promise((resolve, reject) => {
       const command = ffmpeg(this.file)
         .setStartTime(start)
