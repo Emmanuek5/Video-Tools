@@ -78,7 +78,7 @@ class Video {
         .setDuration(dur)
         .output(outputFileName)
         .on("progress", (progress) => {
-          progressCallback(progress.percent);
+          progressCallback(progress.percent.toFixed(2));
         })
         .on("end", () => {
           this.cuts.push({
