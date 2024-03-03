@@ -33,6 +33,30 @@ module.exports = {
       const audioAttachment = interaction.options.get("audio");
       const videoAttachment = interaction.options.get("video");
 
+      //check if the audio attachment is a valid audio file
+      if (
+        !audioAttachment ||
+        !audioAttachment.attachment ||
+        !audioAttachment.attachment.contentType.startsWith("audio/")
+      ) {
+        await interaction.editReply(
+          "Please provide a valid audio file (e.g., .mp3, .wav, .ogg)."
+        );
+        return;
+      }
+
+      //check if the video attachment is a valid video file
+      if (
+        !videoAttachment ||
+        !videoAttachment.attachment ||
+        !videoAttachment.attachment.contentType.startsWith("video/")
+      ) {
+        await interaction.editReply(
+          "Please provide a valid video file (e.g., .mp4)."
+        );
+        return;
+      }
+
       const audioFile = await download(
         audioAttachment.attachment.url,
         path.join(

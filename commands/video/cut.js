@@ -53,6 +53,29 @@ module.exports = {
       await interaction.editReply("Please provide a video attachment.");
       return;
     }
+    if (
+      !videoAttachment ||
+      !videoAttachment.attachment ||
+      !videoAttachment.attachment.contentType.startsWith("video/")
+    ) {
+      await interaction.editReply(
+        "Please provide a valid video file (e.g., .mp4)."
+      );
+      return;
+    }
+
+    // Check if the start and end times are valid
+    if (
+      !start ||
+      !end ||
+      !/^\d{2}:\d{2}$/.test(start) || // Use regex to check time format
+      !/^\d{2}:\d{2}$/.test(end)
+    ) {
+      await interaction.editReply(
+        "Please provide valid start and end times. eg: 00:10 , 01:20"
+      );
+      return;
+    }
 
     // Create a new instance of the Video class
     const video = new Video();
@@ -66,6 +89,8 @@ module.exports = {
         Date.now() + "_" + videoAttachment.name + ".mp4"
       )
     );
+
+    intraction.editReply("Downloading and processing the video...");
     video.setName(videoAttachment.name); // Assuming the name is provided
     const file = await video.download(videoAttachment.attachment.url);
 

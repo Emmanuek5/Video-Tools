@@ -29,7 +29,7 @@ module.exports = {
         .setDescription("The number of parts to split the video into")
         .setRequired(true);
     })
-    .addStringOption((option) => {
+    .addNumberOption((option) => {
       return option
         .setName("duration")
         .setDescription("The duration of each part")
@@ -42,11 +42,39 @@ module.exports = {
     // Retrieve options from interaction
     const videoAttachment = interaction.options.get("video");
     const parts = interaction.options.getInteger("parts");
-    const duration = interaction.options.getString("duration");
+    const duration = interaction.options.getInteger("duration");
 
     // Check if the video attachment exists
     if (!videoAttachment || !videoAttachment.attachment) {
       await interaction.editReply("Please provide a video attachment.");
+      return;
+    }
+
+    if (
+      !videoAttachment ||
+      !videoAttachment.attachment ||
+      !videoAttachment.attachment.contentType.startsWith("video/")
+    ) {
+      await interaction.editReply(
+        "Please provide a valid video file (e.g., .mp4)."
+      );
+      return;
+    }
+
+    // Check if the number of parts is valid
+    if (!parts || parts <= 0 || parts > 20) {
+      // Adjust the range as per your requirements
+      await interaction.editReply(
+        "Please provide a valid number of parts (1-20)."
+      );
+      return;
+    }
+
+    // Check if the duration is valid
+    if (!duration || duration <= 0) {
+      await interaction.editReply(
+        "Please provide a valid duration (greater than 0 seconds)."
+      );
       return;
     }
 
