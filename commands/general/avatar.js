@@ -8,6 +8,7 @@ const {
 
 module.exports = {
   data: new SlashCommandBuilder()
+    .setDefaultMemberPermissions(8)
     .setName("avatar")
     .setDescription("Sets the bot's avatar for the server")
     .addAttachmentOption((option) => {
@@ -32,6 +33,12 @@ module.exports = {
     }
 
     try {
+      if (interaction.user.id !== client.config.owner_id) {
+        await interaction.reply(
+          "You do not have permission to use this command."
+        );
+        return;
+      }
       // Get the image URL
       const imageURL = imageAttachment.attachment.url;
 

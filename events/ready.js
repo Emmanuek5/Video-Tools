@@ -3,6 +3,7 @@ const { checkAndPullChanges } = require("../utils/autoUpdate");
 const { AutoPoster } = require("topgg-autoposter");
 const { app, webhook } = require("../server");
 const config = require("../config.json");
+const { WebSocket } = require("ws");
 
 module.exports = {
   /**
@@ -10,10 +11,36 @@ module.exports = {
    * @param {Client} client
    */
   async ready(client) {
-    const ap = AutoPoster(
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijg5OTA1MzM2MTAxMjI5MzcxMiIsImJvdCI6dHJ1ZSwiaWF0IjoxNzA5MDY0MDUxfQ.S5qm6c6CSdbkyhj7u0OvMbr522GjZL05Z2JZqL_YtwQ",
-      client
-    );
+    const websocket = new WebSocket("ws://localhost:3000", {
+      headers: {
+        Authorization: "Bearer " + config.details.token,
+      },
+    });
+
+    websocket.on("close", (code, reason) => {
+      console.log("close", code, reason.toString());
+    });
+
+    websocket.on("error", (err) => {
+      console.log("error", err);
+    });
+
+    websocket.on("open", (ws) => {
+      websocket.send(
+        JSON.stringify({
+          type: "update",
+          botid: client.user.id,
+          stats: {
+            serverCount: client.guilds.cache.size,
+            userCount: client.users.cache.size,
+            channelCount: client.channels.cache.size,
+          },
+        })
+      );
+      console.log("Connected to websocket");
+    });
+
+    const ap = AutoPoster(config.topgg.token, client);
     const presense = (status = "online") => {
       return {
         status: status,
@@ -41,6 +68,17 @@ module.exports = {
 
     client.on("updateStatus", (status) => {
       ap.post();
+      websocket.send(
+        JSON.stringify({
+          type: "update",
+          botid: client.user.id,
+          stats: {
+            serverCount: client.guilds.cache.size,
+            userCount: client.users.cache.size,
+            channelCount: client.channels.cache.size,
+          },
+        })
+      );
       client.user.setPresence(presense(status));
     });
 
