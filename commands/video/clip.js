@@ -99,7 +99,7 @@ module.exports = {
     await interaction.editReply(
       "Downloading and processing the video... :hourglass_flowing_sand:"
     );
-    const file = await video.download(videoAttachment.attachment.url);
+    const file = await video.download(videoAttachment.url);
 
     try {
       await interaction.editReply(

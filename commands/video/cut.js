@@ -44,7 +44,7 @@ module.exports = {
   async execute(interaction, client) {
     await interaction.deferReply();
     // Retrieve options from interaction
-    const videoAttachment = interaction.options.get("video");
+    const videoAttachment = interaction.options.getAttachment("video");
     const start = interaction.options.getString("start");
     const end = interaction.options.getString("end");
 
@@ -56,7 +56,7 @@ module.exports = {
     if (
       !videoAttachment ||
       !videoAttachment.attachment ||
-      !videoAttachment.attachment.contentType.startsWith("video/")
+      !videoAttachment.contentType.startsWith("video/")
     ) {
       await interaction.editReply(
         "Please provide a valid video file (e.g., .mp4)."
@@ -92,7 +92,7 @@ module.exports = {
 
     intraction.editReply("Downloading and processing the video...");
     video.setName(videoAttachment.name); // Assuming the name is provided
-    const file = await video.download(videoAttachment.attachment.url);
+    const file = await video.download(videoAttachment.url);
 
     try {
       // Format start and end time strings to date number values
