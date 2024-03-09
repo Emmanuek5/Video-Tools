@@ -43,6 +43,8 @@ module.exports = {
       });
     }
 
+    connectWebSocket();
+
     const ap = AutoPoster(config.topgg.token, client);
     const presense = (status = "online") => {
       return {
