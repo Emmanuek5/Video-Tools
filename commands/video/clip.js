@@ -59,7 +59,7 @@ module.exports = {
     if (
       !videoAttachment ||
       !videoAttachment.attachment ||
-      !videoAttachment.attachment.contentType.startsWith("video/")
+      !videoAttachment.contentType.startsWith("video/")
     ) {
       await interaction.editReply(
         "Please provide a valid video file (e.g., .mp4)."
