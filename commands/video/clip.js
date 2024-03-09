@@ -4,6 +4,7 @@ const {
   ActionRowBuilder,
   ButtonBuilder,
   Colors,
+  ChatInputCommandInteraction,
 } = require("discord.js");
 const Video = require("../../classes/Video");
 const path = require("path");
@@ -35,12 +36,17 @@ module.exports = {
         .setDescription("The duration of each part")
         .setRequired(true);
     }),
-
+  /**
+   *
+   * @param {ChatInputCommandInteraction} interaction
+   * @param {*} client
+   * @returns
+   */
   async execute(interaction, client) {
     await interaction.deferReply();
 
     // Retrieve options from interaction
-    const videoAttachment = interaction.options.get("video");
+    const videoAttachment = interaction.options.getAttachment("video");
     const parts = interaction.options.getInteger("parts");
     const duration = interaction.options.getInteger("duration");
 
