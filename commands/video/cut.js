@@ -68,11 +68,11 @@ module.exports = {
     if (
       !start ||
       !end ||
-      !/^\d{2}:\d{2}$/.test(start) || // Use regex to check time format
-      !/^\d{2}:\d{2}$/.test(end)
+      !/^([0-9]|[0-5][0-9]):([0-5][0-9])$/.test(start) || // Updated regex for start time
+      !/^([0-9]|[0-5][0-9]):([0-5][0-9])$/.test(end) // Updated regex for end time
     ) {
       await interaction.editReply(
-        "Please provide valid start and end times. eg: 00:10 , 01:20"
+        "Please provide valid start and end times. eg: 0:10 , 1:20"
       );
       return;
     }
