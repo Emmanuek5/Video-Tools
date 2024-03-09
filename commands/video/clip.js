@@ -48,7 +48,7 @@ module.exports = {
     // Retrieve options from interaction
     const videoAttachment = interaction.options.getAttachment("video");
     const parts = interaction.options.getInteger("parts");
-    const duration = interaction.options.getInteger("duration");
+    const duration = interaction.options.getNumber("duration");
 
     // Check if the video attachment exists
     if (!videoAttachment || !videoAttachment.attachment) {
