@@ -90,7 +90,7 @@ module.exports = {
       )
     );
 
-    intraction.editReply("Downloading and processing the video...");
+    interaction.editReply("Downloading and processing the video...");
     video.setName(videoAttachment.name); // Assuming the name is provided
     const file = await video.download(videoAttachment.url);
 
