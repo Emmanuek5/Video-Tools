@@ -11,34 +11,37 @@ module.exports = {
    * @param {Client} client
    */
   async ready(client) {
-    const websocket = new WebSocket("ws://localhost:3000", {
-      headers: {
-        Authorization: "Bearer " + config.details.token,
-      },
-    });
+    function connectWebSocket() {
+      const websocket = new WebSocket(config.details.websocket, {
+        headers: {
+          Authorization: "Bearer " + config.details.token,
+        },
+      });
 
-    websocket.on("close", (code, reason) => {
-      console.log("close", code, reason.toString());
-    });
+      websocket.on("close", (code, reason) => {
+        console.log("WebSocket closed. Reconnecting...");
+        setTimeout(connectWebSocket, 1000); // Reconnect after 1 second
+      });
 
-    websocket.on("error", (err) => {
-      console.log("error", err);
-    });
+      websocket.on("error", (err) => {
+        console.log("WebSocket error:", err);
+      });
 
-    websocket.on("open", (ws) => {
-      websocket.send(
-        JSON.stringify({
-          type: "update",
-          botid: client.user.id,
-          stats: {
-            serverCount: client.guilds.cache.size,
-            userCount: client.users.cache.size,
-            channelCount: client.channels.cache.size,
-          },
-        })
-      );
-      console.log("Connected to websocket");
-    });
+      websocket.on("open", () => {
+        console.log("Connected to WebSocket");
+        websocket.send(
+          JSON.stringify({
+            type: "update",
+            botid: client.user.id,
+            stats: {
+              serverCount: client.guilds.cache.size,
+              userCount: client.users.cache.size,
+              channelCount: client.channels.cache.size,
+            },
+          })
+        );
+      });
+    }
 
     const ap = AutoPoster(config.topgg.token, client);
     const presense = (status = "online") => {
@@ -67,18 +70,9 @@ module.exports = {
     });
 
     client.on("updateStatus", (status) => {
+      connectWebSocket();
       ap.post();
-      websocket.send(
-        JSON.stringify({
-          type: "update",
-          botid: client.user.id,
-          stats: {
-            serverCount: client.guilds.cache.size,
-            userCount: client.users.cache.size,
-            channelCount: client.channels.cache.size,
-          },
-        })
-      );
+
       client.user.setPresence(presense(status));
     });
 
