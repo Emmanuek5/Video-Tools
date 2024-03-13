@@ -51,5 +51,5 @@ const checkAndPullChanges = async () => {
 };
 
 module.exports = {
-  checkAndPullChanges,
+  checkAndPullChanges: () => {},
 };

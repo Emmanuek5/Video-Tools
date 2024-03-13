@@ -10,6 +10,10 @@ const guildSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  BotName: {
+    type: String,
+    default: "Video Tools",
+  },
 });
 
 module.exports = mongoose.model("Guild", guildSchema);

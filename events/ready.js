@@ -65,7 +65,10 @@ module.exports = {
         client.emit("topggVote", user, vote, client);
       })
     ); // attach the middleware
+    const ApiRouter = require("../routes/api");
+    ApiRouter.client = client;
 
+    app.use("/api/", ApiRouter);
     // optional
     ap.on("posted", (stats) => {
       console.log(`Posted stats to Top.gg | ${stats.serverCount} servers`);
@@ -78,6 +81,12 @@ module.exports = {
       client.user.setPresence(presense(status));
     });
 
+    app.listen(client.config.topgg.port, () => {
+      console.log(
+        "Top.gg webhook server running on port " + client.config.topgg.port
+      );
+    });
+
     setInterval(() => {
       checkAndPullChanges(client);
     }, 2000); //2 seconds
@@ -85,10 +94,5 @@ module.exports = {
     setInterval(() => {
       client.user.setPresence(presense("online"));
     }, 10000);
-    app.listen(client.config.topgg.port, () => {
-      console.log(
-        "Top.gg webhook server running on port " + client.config.topgg.port
-      );
-    });
   },
 };

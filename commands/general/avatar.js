@@ -68,7 +68,7 @@ module.exports = {
           .setLabel("Support Server")
           .setURL(client.config.invite_link)
       );
-      await interaction.editReply({
+      await interaction.reply({
         embeds: [embed],
         components: [row],
       });

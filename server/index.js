@@ -3,6 +3,9 @@ const Topgg = require("@top-gg/sdk");
 const config = require("../config.json");
 const app = express(); // Your express app
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const webhook = new Topgg.Webhook(config.topgg.webhookauth); // add your Top.gg webhook authorization (not bot token)
 
 app.get("/", (req, res) => {
