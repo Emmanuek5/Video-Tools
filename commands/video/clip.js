@@ -3,6 +3,7 @@ const {
   AttachmentBuilder,
   ActionRowBuilder,
   ButtonBuilder,
+  EmbedBuilder,
   Colors,
   ChatInputCommandInteraction,
 } = require("discord.js");
