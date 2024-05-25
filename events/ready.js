@@ -88,10 +88,6 @@ module.exports = {
     });
 
     setInterval(() => {
-      checkAndPullChanges(client);
-    }, 2000); //2 seconds
-
-    setInterval(() => {
       client.user.setPresence(presense("online"));
     }, 10000);
   },
